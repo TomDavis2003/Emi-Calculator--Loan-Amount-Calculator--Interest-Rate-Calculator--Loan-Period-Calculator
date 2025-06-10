@@ -307,6 +307,24 @@
             margin-top: 20px;
         }
         
+        .currency-symbol {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .indian-format {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             .tabs {
                 flex-direction: column;
@@ -319,13 +337,17 @@
             .chart-container {
                 flex-direction: column;
             }
+            
+            h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-calculator"></i> Loan Calculator</h1>
+            <h1><i class="fas fa-calculator"></i> Loan Calculator <span class="currency-symbol">(₹)</span></h1>
             <p class="subtitle">Calculate EMI, Loan Amount, Interest Rate, or Loan Period</p>
         </header>
         
@@ -342,17 +364,17 @@
                 <h2 class="form-title"><i class="fas fa-money-bill-wave"></i> Calculate EMI</h2>
                 <div class="input-group">
                     <div class="input-container">
-                        <label for="emi-loan-amount">Loan Amount ($)</label>
-                        <input type="number" id="emi-loan-amount" placeholder="Enter loan amount" min="100" value="25000">
+                        <label for="emi-loan-amount">Loan Amount (<span class="currency-symbol">₹</span>)</label>
+                        <input type="number" id="emi-loan-amount" placeholder="Enter loan amount" min="1000">
                     </div>
                     <div class="input-container">
                         <label for="emi-interest-rate">Interest Rate (% per annum)</label>
-                        <input type="number" id="emi-interest-rate" placeholder="Enter interest rate" min="1" max="30" step="0.1" value="7.5">
+                        <input type="number" id="emi-interest-rate" placeholder="Enter interest rate" min="1" max="30" step="0.1">
                     </div>
                     <div class="input-container">
                         <label for="emi-period">Loan Period</label>
                         <div class="period-select">
-                            <input type="number" id="emi-period-value" placeholder="Period" min="1" value="5">
+                            <input type="number" id="emi-period-value" placeholder="Period" min="1">
                             <select id="emi-period-unit">
                                 <option value="years">Years</option>
                                 <option value="months">Months</option>
@@ -364,6 +386,7 @@
                     <button class="reset-btn" onclick="resetForm('emi')"><i class="fas fa-redo"></i> Reset</button>
                     <button class="calculate-btn" onclick="calculateEMI()"><i class="fas fa-calculator"></i> Calculate</button>
                 </div>
+                <div class="error-message" id="emi-error"></div>
             </div>
             
             <div class="results" id="emi-results">
@@ -380,27 +403,27 @@
                         <div class="summary-grid">
                             <div class="summary-item">
                                 <span>Loan Amount:</span>
-                                <span id="emi-summary-amount">$25,000.00</span>
+                                <span id="emi-summary-amount" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Interest Rate:</span>
-                                <span id="emi-summary-rate">7.5%</span>
+                                <span id="emi-summary-rate">0%</span>
                             </div>
                             <div class="summary-item">
                                 <span>Loan Period:</span>
-                                <span id="emi-summary-period">5 years</span>
+                                <span id="emi-summary-period">0 years</span>
                             </div>
                             <div class="summary-item">
                                 <span>Monthly EMI:</span>
-                                <span id="emi-summary-emi">$500.00</span>
+                                <span id="emi-summary-emi" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Total Interest:</span>
-                                <span id="emi-summary-interest">$5,000.00</span>
+                                <span id="emi-summary-interest" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Total Payment:</span>
-                                <span id="emi-summary-total">$30,000.00</span>
+                                <span id="emi-summary-total" class="indian-format">₹0.00</span>
                             </div>
                         </div>
                     </div>
@@ -417,9 +440,9 @@
                         <thead>
                             <tr>
                                 <th>Month</th>
-                                <th>Principal ($)</th>
-                                <th>Interest ($)</th>
-                                <th>Balance ($)</th>
+                                <th>Principal (<span class="currency-symbol">₹</span>)</th>
+                                <th>Interest (<span class="currency-symbol">₹</span>)</th>
+                                <th>Balance (<span class="currency-symbol">₹</span>)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -436,17 +459,17 @@
                 <h2 class="form-title"><i class="fas fa-home"></i> Calculate Loan Amount</h2>
                 <div class="input-group">
                     <div class="input-container">
-                        <label for="loan-emi">Monthly EMI ($)</label>
-                        <input type="number" id="loan-emi" placeholder="Enter monthly EMI" min="10" value="500">
+                        <label for="loan-emi">Monthly EMI (<span class="currency-symbol">₹</span>)</label>
+                        <input type="number" id="loan-emi" placeholder="Enter monthly EMI" min="100">
                     </div>
                     <div class="input-container">
                         <label for="loan-interest-rate">Interest Rate (% per annum)</label>
-                        <input type="number" id="loan-interest-rate" placeholder="Enter interest rate" min="1" max="30" step="0.1" value="7.5">
+                        <input type="number" id="loan-interest-rate" placeholder="Enter interest rate" min="1" max="30" step="0.1">
                     </div>
                     <div class="input-container">
                         <label for="loan-period">Loan Period</label>
                         <div class="period-select">
-                            <input type="number" id="loan-period-value" placeholder="Period" min="1" value="5">
+                            <input type="number" id="loan-period-value" placeholder="Period" min="1">
                             <select id="loan-period-unit">
                                 <option value="years">Years</option>
                                 <option value="months">Months</option>
@@ -458,6 +481,7 @@
                     <button class="reset-btn" onclick="resetForm('loan')"><i class="fas fa-redo"></i> Reset</button>
                     <button class="calculate-btn" onclick="calculateLoan()"><i class="fas fa-calculator"></i> Calculate</button>
                 </div>
+                <div class="error-message" id="loan-error"></div>
             </div>
             
             <div class="results" id="loan-results">
@@ -474,27 +498,27 @@
                         <div class="summary-grid">
                             <div class="summary-item">
                                 <span>Loan Amount:</span>
-                                <span id="loan-summary-amount">$25,000.00</span>
+                                <span id="loan-summary-amount" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Interest Rate:</span>
-                                <span id="loan-summary-rate">7.5%</span>
+                                <span id="loan-summary-rate">0%</span>
                             </div>
                             <div class="summary-item">
                                 <span>Loan Period:</span>
-                                <span id="loan-summary-period">5 years</span>
+                                <span id="loan-summary-period">0 years</span>
                             </div>
                             <div class="summary-item">
                                 <span>Monthly EMI:</span>
-                                <span id="loan-summary-emi">$500.00</span>
+                                <span id="loan-summary-emi" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Total Interest:</span>
-                                <span id="loan-summary-interest">$5,000.00</span>
+                                <span id="loan-summary-interest" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Total Payment:</span>
-                                <span id="loan-summary-total">$30,000.00</span>
+                                <span id="loan-summary-total" class="indian-format">₹0.00</span>
                             </div>
                         </div>
                     </div>
@@ -511,9 +535,9 @@
                         <thead>
                             <tr>
                                 <th>Month</th>
-                                <th>Principal ($)</th>
-                                <th>Interest ($)</th>
-                                <th>Balance ($)</th>
+                                <th>Principal (<span class="currency-symbol">₹</span>)</th>
+                                <th>Interest (<span class="currency-symbol">₹</span>)</th>
+                                <th>Balance (<span class="currency-symbol">₹</span>)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -530,17 +554,17 @@
                 <h2 class="form-title"><i class="fas fa-percentage"></i> Calculate Interest Rate</h2>
                 <div class="input-group">
                     <div class="input-container">
-                        <label for="interest-loan-amount">Loan Amount ($)</label>
-                        <input type="number" id="interest-loan-amount" placeholder="Enter loan amount" min="100" value="25000">
+                        <label for="interest-loan-amount">Loan Amount (<span class="currency-symbol">₹</span>)</label>
+                        <input type="number" id="interest-loan-amount" placeholder="Enter loan amount" min="1000">
                     </div>
                     <div class="input-container">
-                        <label for="interest-emi">Monthly EMI ($)</label>
-                        <input type="number" id="interest-emi" placeholder="Enter monthly EMI" min="10" value="500">
+                        <label for="interest-emi">Monthly EMI (<span class="currency-symbol">₹</span>)</label>
+                        <input type="number" id="interest-emi" placeholder="Enter monthly EMI" min="100">
                     </div>
                     <div class="input-container">
                         <label for="interest-period">Loan Period</label>
                         <div class="period-select">
-                            <input type="number" id="interest-period-value" placeholder="Period" min="1" value="5">
+                            <input type="number" id="interest-period-value" placeholder="Period" min="1">
                             <select id="interest-period-unit">
                                 <option value="years">Years</option>
                                 <option value="months">Months</option>
@@ -552,6 +576,7 @@
                     <button class="reset-btn" onclick="resetForm('interest')"><i class="fas fa-redo"></i> Reset</button>
                     <button class="calculate-btn" onclick="calculateInterest()"><i class="fas fa-calculator"></i> Calculate</button>
                 </div>
+                <div class="error-message" id="interest-error"></div>
             </div>
             
             <div class="results" id="interest-results">
@@ -568,27 +593,27 @@
                         <div class="summary-grid">
                             <div class="summary-item">
                                 <span>Loan Amount:</span>
-                                <span id="interest-summary-amount">$25,000.00</span>
+                                <span id="interest-summary-amount" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Interest Rate:</span>
-                                <span id="interest-summary-rate">7.5%</span>
+                                <span id="interest-summary-rate">0%</span>
                             </div>
                             <div class="summary-item">
                                 <span>Loan Period:</span>
-                                <span id="interest-summary-period">5 years</span>
+                                <span id="interest-summary-period">0 years</span>
                             </div>
                             <div class="summary-item">
                                 <span>Monthly EMI:</span>
-                                <span id="interest-summary-emi">$500.00</span>
+                                <span id="interest-summary-emi" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Total Interest:</span>
-                                <span id="interest-summary-interest">$5,000.00</span>
+                                <span id="interest-summary-interest" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Total Payment:</span>
-                                <span id="interest-summary-total">$30,000.00</span>
+                                <span id="interest-summary-total" class="indian-format">₹0.00</span>
                             </div>
                         </div>
                     </div>
@@ -605,9 +630,9 @@
                         <thead>
                             <tr>
                                 <th>Month</th>
-                                <th>Principal ($)</th>
-                                <th>Interest ($)</th>
-                                <th>Balance ($)</th>
+                                <th>Principal (<span class="currency-symbol">₹</span>)</th>
+                                <th>Interest (<span class="currency-symbol">₹</span>)</th>
+                                <th>Balance (<span class="currency-symbol">₹</span>)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -624,22 +649,23 @@
                 <h2 class="form-title"><i class="fas fa-clock"></i> Calculate Loan Period</h2>
                 <div class="input-group">
                     <div class="input-container">
-                        <label for="period-loan-amount">Loan Amount ($)</label>
-                        <input type="number" id="period-loan-amount" placeholder="Enter loan amount" min="100" value="25000">
+                        <label for="period-loan-amount">Loan Amount (<span class="currency-symbol">₹</span>)</label>
+                        <input type="number" id="period-loan-amount" placeholder="Enter loan amount" min="1000">
                     </div>
                     <div class="input-container">
                         <label for="period-interest-rate">Interest Rate (% per annum)</label>
-                        <input type="number" id="period-interest-rate" placeholder="Enter interest rate" min="1" max="30" step="0.1" value="7.5">
+                        <input type="number" id="period-interest-rate" placeholder="Enter interest rate" min="1" max="30" step="0.1">
                     </div>
                     <div class="input-container">
-                        <label for="period-emi">Monthly EMI ($)</label>
-                        <input type="number" id="period-emi" placeholder="Enter monthly EMI" min="10" value="500">
+                        <label for="period-emi">Monthly EMI (<span class="currency-symbol">₹</span>)</label>
+                        <input type="number" id="period-emi" placeholder="Enter monthly EMI" min="100">
                     </div>
                 </div>
                 <div class="buttons">
                     <button class="reset-btn" onclick="resetForm('period')"><i class="fas fa-redo"></i> Reset</button>
                     <button class="calculate-btn" onclick="calculatePeriod()"><i class="fas fa-calculator"></i> Calculate</button>
                 </div>
+                <div class="error-message" id="period-error"></div>
             </div>
             
             <div class="results" id="period-results">
@@ -656,27 +682,27 @@
                         <div class="summary-grid">
                             <div class="summary-item">
                                 <span>Loan Amount:</span>
-                                <span id="period-summary-amount">$25,000.00</span>
+                                <span id="period-summary-amount" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Interest Rate:</span>
-                                <span id="period-summary-rate">7.5%</span>
+                                <span id="period-summary-rate">0%</span>
                             </div>
                             <div class="summary-item">
                                 <span>Loan Period:</span>
-                                <span id="period-summary-period">5 years</span>
+                                <span id="period-summary-period">0 years</span>
                             </div>
                             <div class="summary-item">
                                 <span>Monthly EMI:</span>
-                                <span id="period-summary-emi">$500.00</span>
+                                <span id="period-summary-emi" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Total Interest:</span>
-                                <span id="period-summary-interest">$5,000.00</span>
+                                <span id="period-summary-interest" class="indian-format">₹0.00</span>
                             </div>
                             <div class="summary-item">
                                 <span>Total Payment:</span>
-                                <span id="period-summary-total">$30,000.00</span>
+                                <span id="period-summary-total" class="indian-format">₹0.00</span>
                             </div>
                         </div>
                     </div>
@@ -693,9 +719,9 @@
                         <thead>
                             <tr>
                                 <th>Month</th>
-                                <th>Principal ($)</th>
-                                <th>Interest ($)</th>
-                                <th>Balance ($)</th>
+                                <th>Principal (<span class="currency-symbol">₹</span>)</th>
+                                <th>Interest (<span class="currency-symbol">₹</span>)</th>
+                                <th>Balance (<span class="currency-symbol">₹</span>)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -707,7 +733,7 @@
         </div>
         
         <footer>
-            <p>© 2023 Loan Calculator | Created with HTML, CSS & JavaScript</p>
+            <p>© 2023 Loan Calculator | Created with HTML, CSS & JavaScript | Currency: <span class="currency-symbol">₹ Indian Rupees</span></p>
         </footer>
     </div>
 
@@ -734,10 +760,20 @@
         }
         
         function formatCurrency(amount) {
-            return new Intl.NumberFormat('en-US', {
+            return new Intl.NumberFormat('en-IN', {
                 style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2
+                currency: 'INR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function formatCurrencyWithDecimals(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
             }).format(amount);
         }
         
@@ -766,9 +802,9 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${month}</td>
-                    <td>${formatCurrency(principalPayment)}</td>
-                    <td>${formatCurrency(interestPayment)}</td>
-                    <td>${formatCurrency(balance)}</td>
+                    <td>${formatCurrencyWithDecimals(principalPayment)}</td>
+                    <td>${formatCurrencyWithDecimals(interestPayment)}</td>
+                    <td>${formatCurrencyWithDecimals(balance)}</td>
                 `;
                 
                 tableBody.appendChild(row);
@@ -817,41 +853,75 @@
         }
         
         function resetForm(calculator) {
-            // Clear inputs
-            const inputs = document.querySelectorAll(`#${calculator} input`);
-            inputs.forEach(input => input.value = '');
+            // Reset inputs to blank
+            if (calculator === 'emi') {
+                document.getElementById('emi-loan-amount').value = '';
+                document.getElementById('emi-interest-rate').value = '';
+                document.getElementById('emi-period-value').value = '';
+                document.getElementById('emi-error').style.display = 'none';
+            } else if (calculator === 'loan') {
+                document.getElementById('loan-emi').value = '';
+                document.getElementById('loan-interest-rate').value = '';
+                document.getElementById('loan-period-value').value = '';
+                document.getElementById('loan-error').style.display = 'none';
+            } else if (calculator === 'interest') {
+                document.getElementById('interest-loan-amount').value = '';
+                document.getElementById('interest-emi').value = '';
+                document.getElementById('interest-period-value').value = '';
+                document.getElementById('interest-error').style.display = 'none';
+            } else if (calculator === 'period') {
+                document.getElementById('period-loan-amount').value = '';
+                document.getElementById('period-interest-rate').value = '';
+                document.getElementById('period-emi').value = '';
+                document.getElementById('period-error').style.display = 'none';
+            }
             
             // Hide results
             document.getElementById(`${calculator}-results`).style.display = 'none';
             
             // Hide amortization table
-            document.getElementById(`${calculator}-amortization`).style.display = 'none';
+            const table = document.getElementById(`${calculator}-amortization`);
+            if (table) table.style.display = 'none';
+        }
+        
+        function validateInputs(calculator, inputs) {
+            const errorElement = document.getElementById(`${calculator}-error`);
+            errorElement.style.display = 'none';
+            errorElement.textContent = '';
             
-            // Set default values for demo
-            if (calculator === 'emi') {
-                document.getElementById('emi-loan-amount').value = '25000';
-                document.getElementById('emi-interest-rate').value = '7.5';
-                document.getElementById('emi-period-value').value = '5';
-            } else if (calculator === 'loan') {
-                document.getElementById('loan-emi').value = '500';
-                document.getElementById('loan-interest-rate').value = '7.5';
-                document.getElementById('loan-period-value').value = '5';
-            } else if (calculator === 'interest') {
-                document.getElementById('interest-loan-amount').value = '25000';
-                document.getElementById('interest-emi').value = '500';
-                document.getElementById('interest-period-value').value = '5';
-            } else if (calculator === 'period') {
-                document.getElementById('period-loan-amount').value = '25000';
-                document.getElementById('period-interest-rate').value = '7.5';
-                document.getElementById('period-emi').value = '500';
+            let isValid = true;
+            let errorMessage = '';
+            
+            for (const input of inputs) {
+                const value = parseFloat(input.value);
+                if (isNaN(value) || value <= 0) {
+                    isValid = false;
+                    errorMessage += `Please enter a valid ${input.placeholder.toLowerCase()}<br>`;
+                }
             }
+            
+            if (!isValid) {
+                errorElement.innerHTML = errorMessage;
+                errorElement.style.display = 'block';
+            }
+            
+            return isValid;
         }
         
         // EMI Calculator
         function calculateEMI() {
-            const loanAmount = parseFloat(document.getElementById('emi-loan-amount').value) || 25000;
-            const interestRate = parseFloat(document.getElementById('emi-interest-rate').value) || 7.5;
-            const periodValue = parseFloat(document.getElementById('emi-period-value').value) || 5;
+            const loanAmountInput = document.getElementById('emi-loan-amount');
+            const interestRateInput = document.getElementById('emi-interest-rate');
+            const periodValueInput = document.getElementById('emi-period-value');
+            
+            // Validate inputs
+            if (!validateInputs('emi', [loanAmountInput, interestRateInput, periodValueInput])) {
+                return;
+            }
+            
+            const loanAmount = parseFloat(loanAmountInput.value);
+            const interestRate = parseFloat(interestRateInput.value);
+            const periodValue = parseFloat(periodValueInput.value);
             const periodUnit = document.getElementById('emi-period-unit').value;
             
             // Convert period to months
@@ -887,9 +957,18 @@
         
         // Loan Amount Calculator
         function calculateLoan() {
-            const emi = parseFloat(document.getElementById('loan-emi').value) || 500;
-            const interestRate = parseFloat(document.getElementById('loan-interest-rate').value) || 7.5;
-            const periodValue = parseFloat(document.getElementById('loan-period-value').value) || 5;
+            const emiInput = document.getElementById('loan-emi');
+            const interestRateInput = document.getElementById('loan-interest-rate');
+            const periodValueInput = document.getElementById('loan-period-value');
+            
+            // Validate inputs
+            if (!validateInputs('loan', [emiInput, interestRateInput, periodValueInput])) {
+                return;
+            }
+            
+            const emi = parseFloat(emiInput.value);
+            const interestRate = parseFloat(interestRateInput.value);
+            const periodValue = parseFloat(periodValueInput.value);
             const periodUnit = document.getElementById('loan-period-unit').value;
             
             // Convert period to months
@@ -925,9 +1004,18 @@
         
         // Interest Rate Calculator (using approximation)
         function calculateInterest() {
-            const loanAmount = parseFloat(document.getElementById('interest-loan-amount').value) || 25000;
-            const emi = parseFloat(document.getElementById('interest-emi').value) || 500;
-            const periodValue = parseFloat(document.getElementById('interest-period-value').value) || 5;
+            const loanAmountInput = document.getElementById('interest-loan-amount');
+            const emiInput = document.getElementById('interest-emi');
+            const periodValueInput = document.getElementById('interest-period-value');
+            
+            // Validate inputs
+            if (!validateInputs('interest', [loanAmountInput, emiInput, periodValueInput])) {
+                return;
+            }
+            
+            const loanAmount = parseFloat(loanAmountInput.value);
+            const emi = parseFloat(emiInput.value);
+            const periodValue = parseFloat(periodValueInput.value);
             const periodUnit = document.getElementById('interest-period-unit').value;
             
             // Convert period to months
@@ -987,9 +1075,18 @@
         
         // Loan Period Calculator
         function calculatePeriod() {
-            const loanAmount = parseFloat(document.getElementById('period-loan-amount').value) || 25000;
-            const interestRate = parseFloat(document.getElementById('period-interest-rate').value) || 7.5;
-            const emi = parseFloat(document.getElementById('period-emi').value) || 500;
+            const loanAmountInput = document.getElementById('period-loan-amount');
+            const interestRateInput = document.getElementById('period-interest-rate');
+            const emiInput = document.getElementById('period-emi');
+            
+            // Validate inputs
+            if (!validateInputs('period', [loanAmountInput, interestRateInput, emiInput])) {
+                return;
+            }
+            
+            const loanAmount = parseFloat(loanAmountInput.value);
+            const interestRate = parseFloat(interestRateInput.value);
+            const emi = parseFloat(emiInput.value);
             
             // Calculate period in months
             const monthlyRate = interestRate / 100 / 12;
@@ -1000,20 +1097,18 @@
             const totalPayment = emi * periodMonths;
             const totalInterest = totalPayment - loanAmount;
             
-            // Convert to years if applicable
-            let periodValue, periodUnit;
-            if (periodMonths >= 12) {
-                periodValue = (periodMonths / 12).toFixed(1);
-                periodUnit = 'years';
-            } else {
-                periodValue = periodMonths;
-                periodUnit = 'months';
-            }
+            // Convert to years and months
+            const years = Math.floor(periodMonths / 12);
+            const months = periodMonths % 12;
+            
+            let periodDisplay = '';
+            if (years > 0) periodDisplay += `${years} years `;
+            if (months > 0) periodDisplay += `${months} months`;
             
             // Update results
             document.getElementById('period-summary-amount').textContent = formatCurrency(loanAmount);
             document.getElementById('period-summary-rate').textContent = `${interestRate.toFixed(2)}%`;
-            document.getElementById('period-summary-period').textContent = `${periodValue} ${periodUnit}`;
+            document.getElementById('period-summary-period').textContent = periodDisplay;
             document.getElementById('period-summary-emi').textContent = formatCurrency(emi);
             document.getElementById('period-summary-interest').textContent = formatCurrency(totalInterest);
             document.getElementById('period-summary-total').textContent = formatCurrency(totalPayment);
@@ -1030,9 +1125,10 @@
             generateAmortizationSchedule(loanAmount, interestRate, periodMonths, emi, 'period');
         }
         
-        // Initialize the page with EMI calculation
+        // Initialize the page with blank inputs
         window.onload = function() {
-            calculateEMI();
+            // Set all inputs to blank
+            resetForm('emi');
             resetForm('loan');
             resetForm('interest');
             resetForm('period');
